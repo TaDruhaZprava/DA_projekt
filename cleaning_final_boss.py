@@ -220,6 +220,12 @@ cruises = cruises[["Dato", "ETA", "ETD", "Navn",
 cruises = cruises.rename(columns={"Dato": "date", "Navn": "boat", "Passasjerer": "passengers",
                          "Kai": "quay", "Tonn": "weight", "Lengde": "lenght", "Agent": "agent"})
 
+cruises.loc[cruises['boat'].str.lower() == 'aidamar', 'passengers'] = 2194
+cruises.loc[cruises['boat'].str.lower() == 'bolette', 'passengers'] = 1338
+cruises.loc[cruises['boat'].str.lower() == 'borealis', 'passengers'] = 1353
+cruises.loc[cruises['boat'].str.lower() == 'gann', 'passengers'] = 200
+cruises.loc[cruises['boat'].str.lower() == 'sh diana', 'passengers'] = 192
+
 update = [
     (16, "ETA", "08:00"),
     (16, "ETD", "17:00"),
