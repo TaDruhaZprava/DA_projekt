@@ -294,3 +294,18 @@ combined = pd.concat([expand_rows(row)
 combined = combined.drop(
     ["Date of arrival", "Date of departure", "ETA_x", "ETD_x"], axis="columns")
 combined.to_csv("data/harbour_for_realsies.csv", encoding="utf-8")
+
+# adding a few steps so the file can be uploaded to Azure SQL databasis
+harbour = pd.read_csv("data/harbour_for_realsies.csv")
+harbour = harbour.where(pd.notna(harbour), 0)
+
+harbour['passengers'] = harbour['passengers'].apply(lambda x: int(float(x)))
+harbour['weight'] = harbour['weight'].apply(lambda x: int(float(x)))
+harbour['lenght'] = harbour['lenght'].apply(lambda x: int(float(x)))
+
+harbour.dropna(how='all', inplace=True)
+
+harbour = harbour.rename(columns={"hourly_timestamp": "DateTime"})
+harbour = harbour[["DateTime", "boat", "passengers", "quay", "agent", "weight", "lenght"]]
+
+harbour.to_csv('data/harbour_sql.csv', index=False)
